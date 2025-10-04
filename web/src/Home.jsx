@@ -46,7 +46,6 @@ function Home() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-2xl font-bold">STOP A</CardTitle>
-            
           </CardHeader>
           <CardContent>
             <div className="flex items-center gap-3">
@@ -103,7 +102,7 @@ function Home() {
               className="px-3 py-1 bg-blue-500 text-white rounded-lg text-sm mt-100"
             >
               Connect
-            </button>
+        </button>
 
       </div>
     </div>

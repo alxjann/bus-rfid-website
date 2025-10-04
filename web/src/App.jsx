@@ -16,6 +16,3 @@ function App() {
 }
 
 export default App
-//D1 0B AC 97
-
-//93 DE 99 FE
