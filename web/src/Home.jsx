@@ -17,7 +17,7 @@ function Home() {
 
 	useEffect(() => {
 		const fetchCount = () => {
-			fetch(`${backendUrl}/api/stop/a`)
+			fetch(`${VITE_REACT_APP_API_URL}/api/stop/a`)
 				.then(res => res.json())
 				.then(data => {
 					setCountA(data.passengerCount);
