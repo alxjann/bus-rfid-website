@@ -8,7 +8,7 @@ function View() {
 
     useEffect(() => {
         const fetchCount = () => {
-            fetch(`${VITE_REACT_APP_API_URL}/api/stop/a`)
+            fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/api/stop/a`)
                 .then(res => res.json())
                 .then(data => {
                     setCountA(data.passengerCount);
