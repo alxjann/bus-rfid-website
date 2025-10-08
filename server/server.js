@@ -1,50 +1,46 @@
-const express = require('express');
-require('dotenv').config();
-const { MongoClient } = require('mongodb');
-const cors = require('cors');
+const express = require("express");
+const { MongoClient } = require("mongodb");
+const cors = require("cors");
+require("dotenv").config();
+
 const app = express();
-
-
-const mongoUrl = process.env.MONGO_URL;
-const dbName = 'its';
-let db;
-
 app.use(cors());
 
-MongoClient.connect(mongoUrl).then(client => {
-	console.log('Connected to MongoDB');
-	db = client.db(dbName);
-}).catch(err => {
-	console.error('MongoDB connection error:', err);
-});
+const mongoUrl = process.env.MONGO_URL;
+const dbName = "its";
+let db;
+
+// Connect to MongoDB once (global cache)
+let cachedClient = null;
+let cachedDb = null;
+
+async function connectToDatabase() {
+  if (cachedDb) return cachedDb;
+  const client = await MongoClient.connect(mongoUrl);
+  cachedClient = client;
+  cachedDb = client.db(dbName);
+  return cachedDb;
+}
 
 app.get("/", (req, res) => {
-  res.send("Hello World");
+  res.send("Hello World from Vercel");
 });
 
-app.get('/api/stop/:name', async (req, res) => {
-	try {
-		if (!db) 
-			return res.status(500).json({ error: 'DB not connected' });
+app.get("/api/stop/:name", async (req, res) => {
+  try {
+    const db = await connectToDatabase();
+    const stop = await db.collection("its").findOne({ _id: req.params.name });
 
-		const stop = await db.collection('its').findOne({ _id: req.params.name });
+    if (!stop) return res.status(404).json({ error: "Stop not found" });
 
-		if (!stop) 
-			return res.status(404).json({ error: 'Stop not found' });
-
-		res.json({ 
-			passengerCount: stop.passengerCount,
-			lastUpdated: stop.lastUpdated
-		});
-
-	} catch (err) {
-		res.status(500).json({ error: err.message });
-	}
+    res.json({
+      passengerCount: stop.passengerCount,
+      lastUpdated: stop.lastUpdated,
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
-/*
-app.listen(3000, () => {
-	console.log('Server is running on port 3000');
-});
-*/
+
 module.exports = app;
