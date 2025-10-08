@@ -18,6 +18,10 @@ MongoClient.connect(mongoUrl).then(client => {
 	console.error('MongoDB connection error:', err);
 });
 
+app.get("/", (req, res) => {
+  res.send("Hello World");
+});
+
 app.get('/api/stop/:name', async (req, res) => {
 	try {
 		if (!db) 

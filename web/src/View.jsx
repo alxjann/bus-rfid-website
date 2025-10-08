@@ -1,12 +1,14 @@
 import { useEffect } from "react";
 import { useState } from "react"
 
+import { backendUrl } from "./server.js"
+
 function View() {
     const [countA, setCountA] = useState(0);
 
     useEffect(() => {
         const fetchCount = () => {
-            fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/api/stop/a`)
+            fetch(`${backendUrl}/api/stop/a`)
                 .then(res => res.json())
                 .then(data => {
                     setCountA(data.passengerCount);
