@@ -1,1 +1,0 @@
-export const backendUrl = "https://bus-rfid-website-api.vercel.app"

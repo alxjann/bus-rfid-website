@@ -27,13 +27,14 @@ app.get("/", (req, res) => {
 app.get("/api/stop/:name", async (req, res) => {
   try {
     const db = await connectToDatabase();
-    const stop = await db.collection("its").findOne({ _id: req.params.name });
+    
+    const documentCount = await db.collection("list").countDocuments({ _id: req.params.name });
 
-    if (!stop) return res.status(404).json({ error: "Stop not found" });
+    const lastUpdate = await db.collection("list").findOne({ _id: "collectionUpdate" });
 
     res.json({
-      passengerCount: stop.passengerCount,
-      lastUpdated: stop.lastUpdated,
+      passengerCount: documentCount,
+      lastUpdated: lastUpdate.dateScanned,
     });
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -41,7 +42,7 @@ app.get("/api/stop/:name", async (req, res) => {
 });
 
 
-module.exports = app;
+//module.exports = app;
 
 /*
 app.listen(3000, () => {

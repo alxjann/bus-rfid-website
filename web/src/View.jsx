@@ -1,8 +1,6 @@
 import { useEffect } from "react";
 import { useState } from "react"
 
-import { backendUrl } from "./server.js"
-
 function View() {
     const [countA, setCountA] = useState(0);
 

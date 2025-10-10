@@ -1,15 +1,5 @@
-import { backendUrl } from "./server.js"
-
-import { useState } from "react"
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
-
-import { UsersIcon } from "lucide-react"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
+import CreateCard from "./components/createCard";
 
 function Home() {
 	const [countA, setCountA] = useState(0);
@@ -55,61 +45,15 @@ function Home() {
   	return (
     	<div className="w-full p-6 flex justify-center">
       		<div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4 w-full max-w-6xl md:mt-20">
-				<Card>
-					<CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-						<CardTitle className="text-2xl font-bold">STOP A</CardTitle>
-					</CardHeader>
-					<CardContent>
-						<div className="flex items-center gap-3">
-							<UsersIcon className="h-4 w-4 text-muted-foreground" />
-							<div className="text-2xl font-semibold">
-								{countA}
-							</div>
-						</div>
-						<div className="text-sm text-muted-foreground mt-2">
-							{lastUpdateA}
-						</div>
-					</CardContent>
-				</Card>
 
-				<Card>
-					<CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-						<CardTitle className="text-2xl font-bold">STOP B</CardTitle>
-					</CardHeader>
-					<CardContent>
-						<div className="flex items-center gap-3">
-							<UsersIcon className="h-4 w-4 text-muted-foreground" />
-							<div className="text-2xl font-semibold">2</div>
-						</div>
-						<div className="text-sm text-muted-foreground mt-2">Last Update 5 minutes ago</div>
-					</CardContent>
-				</Card>
-
-				<Card>
-					<CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-						<CardTitle className="text-2xl font-bold">STOP C</CardTitle>
-					</CardHeader>
-					<CardContent>
-						<div className="flex items-center gap-3">
-							<UsersIcon className="h-4 w-4 text-muted-foreground" />
-							<div className="text-2xl font-semibold">5</div>
-						</div>
-						<div className="text-sm text-muted-foreground mt-2">Last Update 5 minutes ago</div>
-					</CardContent>
-				</Card>
-
-				<Card>
-					<CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-						<CardTitle className="text-2xl font-bold">STOP D</CardTitle>
-					</CardHeader>
-					<CardContent>
-						<div className="flex items-center gap-3">
-							<UsersIcon className="h-4 w-4 text-muted-foreground" />
-							<div className="text-2xl font-semibold">13</div>
-						</div>
-						<div className="text-sm text-muted-foreground mt-2">Last Update 5 minutes ago</div>
-					</CardContent>
-				</Card>
+				<CreateCard title="STOP A" count={countA} lastUpdate={lastUpdateA} />
+				<CreateCard title="STOP B" count={5} lastUpdate="Last Update 5 minutes ago" />
+				<CreateCard title="STOP C" count={10} lastUpdate="Last Update 10 minutes ago" />
+				<CreateCard title="STOP D" count={15} lastUpdate="Last Update 15 minutes ago" />
+				<CreateCard title="STOP E" count={18} lastUpdate="Last Update 20 minutes ago" />
+				<CreateCard title="STOP F" count={13} lastUpdate="Last Update 5 minutes ago" />
+				<CreateCard title="STOP G" count={5} lastUpdate="Last Update 10 minutes ago" />
+				<CreateCard title="STOP H" count={3} lastUpdate="Last Update 15 minutes ago" />
 			</div>
 		</div>
     
