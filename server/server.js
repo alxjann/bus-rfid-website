@@ -28,13 +28,28 @@ app.get("/api/stop/:name", async (req, res) => {
   try {
     const db = await connectToDatabase();
     
-    const documentCount = await db.collection("list").countDocuments({ stop: req.params.name });
+    const documentCount = await db.collection("list").countDocuments({ _id: req.params.name });
 
     const lastUpdate = await db.collection("list").findOne({ _id: "collectionUpdate" });
 
     res.json({
       passengerCount: documentCount,
       lastUpdate: lastUpdate.lastUpdate,
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.delete("/api/clear/:name", async (req, res) => {
+  try {
+    const db = await connectToDatabase();
+    
+    const result = await db.collection("list").deleteMany({ stop: req.params.name });
+    
+    res.json({
+      message: `Successfully cleared ${result.deletedCount} documents`,
+      deletedCount: result.deletedCount
     });
   } catch (err) {
     res.status(500).json({ error: err.message });
