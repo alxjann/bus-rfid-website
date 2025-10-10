@@ -34,7 +34,7 @@ app.get("/api/stop/:name", async (req, res) => {
 
     res.json({
       passengerCount: documentCount,
-      lastUpdated: lastUpdate.dateScanned,
+      lastUpdate: lastUpdate.dateScanned,
     });
   } catch (err) {
     res.status(500).json({ error: err.message });

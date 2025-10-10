@@ -12,7 +12,7 @@ function Home() {
 				.then(data => {
 					setCountA(data.passengerCount);
 
-					const date = new Date(data.lastUpdated);
+					const date = new Date(data.lastUpdate);
 					const now = new Date();
 
 					const diff = Math.floor((now - date) / 1000);
