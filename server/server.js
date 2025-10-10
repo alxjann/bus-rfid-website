@@ -28,9 +28,9 @@ app.get("/api/stop/:name", async (req, res) => {
   try {
     const db = await connectToDatabase();
     
-    const documentCount = await db.collection("list").countDocuments({ stop: req.params.name });
-
-    const lastUpdate = await db.collection("list").findOne({ _id: "collectionUpdate" });
+    const collection = db.collection("list");
+    const documentCount = await collection.countDocuments({ stop: req.params.name });
+    const lastUpdate = await collection.findOne({ _id: "collectionUpdate" });
 
     res.json({
       passengerCount: documentCount,
@@ -45,12 +45,24 @@ app.delete("/api/clear/:name", async (req, res) => {
   try {
     const db = await connectToDatabase();
     
-    const result = await db.collection("list").deleteMany({ stop: req.params.name });
-    
+    const collection = db.collection("list");
+    const result = await collection.deleteMany({ stop: req.params.name });
+    const lastUpdate = await collection.findOne({ _id: "collectionUpdate" });
+
+    if (lastUpdate) {
+      collection.updateOne(
+        { _id: "collectionUpdate" },
+        { $set: { lastUpdate: new Date() } }
+      );
+    }
+      
+
     res.json({
       message: `Successfully cleared ${result.deletedCount} documents`,
       deletedCount: result.deletedCount
     });
+
+
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
