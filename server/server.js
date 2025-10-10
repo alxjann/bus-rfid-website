@@ -28,7 +28,7 @@ app.get("/api/stop/:name", async (req, res) => {
   try {
     const db = await connectToDatabase();
     
-    const documentCount = await db.collection("list").countDocuments({ _id: req.params.name });
+    const documentCount = await db.collection("list").countDocuments({ stop: req.params.name });
 
     const lastUpdate = await db.collection("list").findOne({ _id: "collectionUpdate" });
 
