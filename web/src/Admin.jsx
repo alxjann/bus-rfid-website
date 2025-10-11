@@ -17,14 +17,45 @@ function Admin() {
             alert('Error clearing documents');
         }
     };
+    
+    const handleStatus = async () => {
+        try {
+            const response = await fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/api/stop/a`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ status: 'Ready to Board' })
+            });
+             
+            if (response.ok) {
+                alert('Bus status updated to Ready to Board');
+            }   
+            else {
+                alert('Failed to update bus status');
+            }
+        } catch (error) {
+            console.error('Error updating bus status:', error);
+            alert('Error updating bus status');
+        }
+    }
 
     return (
         <>
             <div className="flex justify-center items-center h-screen">
-                <div className="flex flex-col gap-5 items-center">
-                    <h1 className="text-xl font-bold">Clear Passenger: </h1>
-                    <Button size="lg" onClick={handleClear}>CLEAR</Button>
+
+                <div className="flex flex-col gap-10">
+                    <div className="flex flex-col gap-2 items-center">
+                        <h1 className="text-xl font-bold">Bus Status: </h1>
+                        <Button size="lg" onClick={handleStatus}>Ready to Board</Button>
+                    </div>
+
+                    <div className="flex flex-col gap-2 items-center">
+                        <h1 className="text-xl font-bold">Clear Passenger: </h1>
+                        <Button size="lg" onClick={handleClear}>CLEAR</Button>
+                    </div>
                 </div>
+
             </div>
         </>
     )
