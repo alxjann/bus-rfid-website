@@ -5,6 +5,7 @@ require("dotenv").config();
 
 const app = express();
 app.use(cors());
+app.use(express.json());
 
 const mongoUrl = process.env.MONGO_URL;
 const dbName = "its";
@@ -30,11 +31,49 @@ app.get("/api/stop/:name", async (req, res) => {
     
     const collection = db.collection("list");
     const documentCount = await collection.countDocuments({ stop: req.params.name });
-    const lastUpdate = await collection.findOne({ _id: "collectionUpdate" });
+    const collectionUpdate = await collection.findOne({ _id: "collectionUpdate" });
+
+    if (collectionUpdate.status !== 'Ready to Board') {
+      const status = documentCount > 0 ? 'Awaiting Bus' : 'No Passenger';
+      await collection.updateOne(
+        { _id: "collectionUpdate" },
+        { 
+          $set: { 
+            status: status
+          }
+        }
+      );
+      collectionUpdate.status = status;
+    }
 
     res.json({
       passengerCount: documentCount,
-      lastUpdate: lastUpdate.lastUpdate,
+      lastUpdate: collectionUpdate.lastUpdate,
+      status: collectionUpdate.status
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.put("/api/stop/:name", async (req, res) => {
+  try {
+    const db = await connectToDatabase();
+    const stopName = req.params.name;
+    const { status } = req.body;
+    
+    await db.collection("list").updateOne(
+      { _id: "collectionUpdate" },
+      { 
+        $set: { 
+          status: status
+        }
+      }
+    );
+
+    res.json({
+      message: `Status updated to ${status} for stop ${stopName}`,
+      status: status
     });
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -52,7 +91,12 @@ app.delete("/api/clear/:name", async (req, res) => {
     if (lastUpdate) {
       collection.updateOne(
         { _id: "collectionUpdate" },
-        { $set: { lastUpdate: new Date() } }
+        { 
+          $set: { 
+            lastUpdate: new Date(),
+            status: "No Passenger"
+          } 
+        }
       );
     }
       
