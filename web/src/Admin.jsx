@@ -18,14 +18,14 @@ function Admin() {
         }
     };
     
-    const handleStatus = async () => {
+    const handleStatus = async (status) => {
         try {
             const response = await fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/api/stop/a`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ status: 'Ready to Board' })
+                body: JSON.stringify({ status: status })
             });
              
             if (response.ok) {
@@ -47,7 +47,9 @@ function Admin() {
                 <div className="flex flex-col gap-10">
                     <div className="flex flex-col gap-2 items-center">
                         <h1 className="text-xl font-bold">Bus Status: </h1>
-                        <Button size="lg" onClick={handleStatus}>Ready to Board</Button>
+                        <Button size="lg" onClick={handleStatus('Ready to Board')}>Ready to Board</Button>
+                        <Button size="lg" onClick={handleStatus('Awaiting Bus')}>Awaiting Bus</Button>
+                        <Button size="lg" onClick={handleStatus('Route Mismatch')}>Route Mismatch</Button>
                     </div>
 
                     <div className="flex flex-col gap-2 items-center">
