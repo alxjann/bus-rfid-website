@@ -27,9 +27,9 @@ function Admin() {
                 },
                 body: JSON.stringify({ status: status })
             });
-             
+
             if (response.ok) {
-                alert('Bus status updated to Ready to Board');
+                alert('Bus status updated');
             }   
             else {
                 alert('Failed to update bus status');
@@ -47,9 +47,9 @@ function Admin() {
                 <div className="flex flex-col gap-10">
                     <div className="flex flex-col gap-2 items-center">
                         <h1 className="text-xl font-bold">Bus Status: </h1>
-                        <Button size="lg" onClick={handleStatus('Ready to Board')}>Ready to Board</Button>
-                        <Button size="lg" onClick={handleStatus('Awaiting Bus')}>Awaiting Bus</Button>
-                        <Button size="lg" onClick={handleStatus('Route Mismatch')}>Route Mismatch</Button>
+                        <Button size="lg" onClick={() => handleStatus('Ready to Board')}>Ready to Board</Button>
+                        <Button size="lg" onClick={() => handleStatus('Awaiting Bus')}>Awaiting Bus</Button>
+                        <Button size="lg" onClick={() => handleStatus('Route Mismatch')}>Route Mismatch</Button>
                     </div>
 
                     <div className="flex flex-col gap-2 items-center">
