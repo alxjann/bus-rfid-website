@@ -33,7 +33,7 @@ app.get("/api/stop/:name", async (req, res) => {
     const documentCount = await collection.countDocuments({ stop: req.params.name });
     const collectionUpdate = await collection.findOne({ _id: "collectionUpdate" });
 
-    if (collectionUpdate.status !== 'Ready to Board' && collectionUpdate.status !== 'Route Mismatch') {
+    if (collectionUpdate.status !== 'Ready to Board') {
       const status = documentCount > 0 ? 'Awaiting Bus' : 'No Passenger';
       await collection.updateOne(
         { _id: "collectionUpdate" },
