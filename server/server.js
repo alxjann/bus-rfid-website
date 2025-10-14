@@ -61,15 +61,18 @@ app.put("/api/stop/:name", async (req, res) => {
     const db = await connectToDatabase();
     const stopName = req.params.name;
     const { status } = req.body;
+    const collectionUpdate = await collection.findOne({ _id: "collectionUpdate" });
     
-    await db.collection("list").updateOne(
-      { _id: "collectionUpdate" },
-      { 
-        $set: { 
-          status: status
+    if (collectionUpdate.status === 'Ready to Board' || collectionUpdate.status === 'Route Mismatch') {
+      await collectionUpdate.updateOne(
+        { _id: "collectionUpdate" },
+        { 
+          $set: { 
+            status: status
+          }
         }
-      }
-    );
+      );
+    }
 
     res.json({
       message: `Status updated to ${status} for stop ${stopName}`,
