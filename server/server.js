@@ -56,7 +56,7 @@ app.get("/api/stop/:name", async (req, res) => {
   }
 });
 
-app.put("/api/stop/:name", async (req, res) => {
+app.patch("/api/stop/:name", async (req, res) => {
   try {
     const db = await connectToDatabase();
     const stopName = req.params.name;

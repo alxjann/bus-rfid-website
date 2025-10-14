@@ -28,9 +28,13 @@ function Admin() {
     const handleStatus = async (status) => {
         setIsStatusLoading(true);
         try {
-            const response = await fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/api/stop/a?status=Ready to Board`, {
-                method: 'PUT',
-                });
+            const response = await fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/api/stop/a`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ status: status })
+            });
 
             if (response.ok) {
                 alert('Bus status updated');
