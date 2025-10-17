@@ -30,7 +30,6 @@ function Admin() {
     const handleStatus = async (status) => {
         setIsStatusLoading(true);
         try {
-            await fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/api/stop/a`);
             const response = await fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/api/stop/a`, {
                 method: 'PATCH',
                 headers: {
@@ -92,24 +91,6 @@ function Admin() {
                         >
                             {isClearLoading ? 'Loading...' : 'CLEAR'}
                         </Button>
-                        {/* <div className="flex gap-2 mt-2">
-                            <input
-                                type="number"
-                                min="1"
-                                className="border rounded px-2 py-1 w-30"
-                                placeholder="count"
-                                value={customCount}
-                                onChange={e => setCustomCount(e.target.value)}
-                                disabled={isClearLoading}
-                            />
-                            <Button
-                                size="lg"
-                                onClick={() => handleClear(customCount)}
-                                disabled={isClearLoading}
-                            >
-                                {isClearLoading ? 'Loading...' : 'Clear Custom'}
-                            </Button>
-                        </div> */}
                     </div>
                 </div>
 
