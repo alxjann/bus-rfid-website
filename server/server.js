@@ -29,13 +29,15 @@ app.get("/api/stop/:name", async (req, res) => {
   try {
     const db = await connectToDatabase();
     
-    const collection = db.collection("list");
-    const documentCount = await collection.countDocuments({ stop: req.params.name });
-    const collectionUpdate = await collection.findOne({ _id: "collectionUpdate" });
+    const collectionList = db.collection("list");
+    const collectionStatus = db.collection("status");
+    
+    const documentCount = await collectionList.countDocuments({ stop: req.params.name });
+    const collectionUpdate = await collectionStatus.findOne({ _id: "collectionUpdate" });
 
     if (collectionUpdate.status !== 'Ready to Board' && collectionUpdate.status !== 'Route Mismatch') {
       const status = documentCount > 0 ? 'Awaiting Bus' : 'No Passenger';
-      await collection.updateOne(
+      await collectionStatus.updateOne(
         { _id: "collectionUpdate" },
         { 
           $set: { 
@@ -60,10 +62,10 @@ app.patch("/api/stop/:name", async (req, res) => {
   try {
     const db = await connectToDatabase();
     const stopName = req.params.name;
-    const collection = db.collection("list");
+    const collectionStatus = db.collection("status");
 
     //if (req.body.status === 'Ready to Board' || req.body.status === 'Route Mismatch') {
-      await collection.updateOne(
+      await collectionStatus.updateOne(
         { _id: "collectionUpdate" },
         { 
           $set: { 
@@ -86,12 +88,13 @@ app.delete("/api/clear/:name", async (req, res) => {
   try {
     const db = await connectToDatabase();
     
-    const collection = db.collection("list");
-    const result = await collection.deleteMany({ stop: req.params.name });
-    const lastUpdate = await collection.findOne({ _id: "collectionUpdate" });
+    const collectionList = db.collection("list");
+    const collectionStatus = db.collection("status");
+    const result = await collectionList.deleteMany({ stop: req.params.name });
+    const lastUpdate = await collectionStatus.findOne({ _id: "collectionUpdate" });
 
     if (lastUpdate) {
-      collection.updateOne(
+      collectionStatus.updateOne(
         { _id: "collectionUpdate" },
         { 
           $set: { 
