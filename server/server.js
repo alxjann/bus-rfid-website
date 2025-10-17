@@ -84,78 +84,78 @@ app.patch("/api/stop/:name", async (req, res) => {
   }
 });
 
-// app.delete("/api/clear/:name", async (req, res) => {
-//   try {
-//     const db = await connectToDatabase();
-    
-//     const collectionList = db.collection("list");
-//     const collectionStatus = db.collection("status");
-//     const result = await collectionList.deleteMany({ stop: req.params.name });
-//     const lastUpdate = await collectionStatus.findOne({ _id: "collectionUpdate" });
-
-//     if (lastUpdate) {
-//       collectionStatus.updateOne(
-//         { _id: "collectionUpdate" },
-//         { 
-//           $set: { 
-//             lastUpdate: new Date(),
-//             status: "No Passenger"
-//           } 
-//         }
-//       );
-//     }
-      
-
-//     res.json({
-//       message: `Successfully cleared ${result.deletedCount} documents`,
-//       deletedCount: result.deletedCount
-//     });
-
-
-//   } catch (err) {
-//     res.status(500).json({ error: err.message });
-//   }
-// });
-
-
-app.delete("/api/clear/:name/:count?", async (req, res) => {
+app.delete("/api/clear/:name", async (req, res) => {
   try {
     const db = await connectToDatabase();
+    
     const collectionList = db.collection("list");
     const collectionStatus = db.collection("status");
+    const result = await collectionList.deleteMany({ stop: req.params.name });
+    const lastUpdate = await collectionStatus.findOne({ _id: "collectionUpdate" });
 
-    const stopName = req.params.name;
-    const count = parseInt(req.params.count, 10);
-
-    let result;
-
-    if (!isNaN(count) && count > 0) {
-      const docsToDelete = await collectionList.find({ stop: stopName }).limit(count).toArray();
-      const ids = docsToDelete.map(doc => doc._id);
-      result = await collectionList.deleteMany({ _id: { $in: ids } });
-    } else {
-      result = await collectionList.deleteMany({ stop: stopName });
-    }
-
-    await collectionStatus.updateOne(
-      { _id: "collectionUpdate" },
-      {
-        $set: {
-          lastUpdate: new Date(),
-          status: result.deletedCount > 0 ? "Updated" : "No Passenger"
+    if (lastUpdate) {
+      collectionStatus.updateOne(
+        { _id: "collectionUpdate" },
+        { 
+          $set: { 
+            lastUpdate: new Date(),
+            status: "No Passenger"
+          } 
         }
-      },
-      { upsert: true }
-    );
+      );
+    }
+      
 
     res.json({
-      message: `Deleted ${result.deletedCount} document(s) for stop ${stopName}`,
+      message: `Successfully cleared ${result.deletedCount} documents`,
       deletedCount: result.deletedCount
     });
+
+
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
+
+
+// app.delete("/api/clear/:name/:count?", async (req, res) => {
+//   try {
+//     const db = await connectToDatabase();
+//     const collectionList = db.collection("list");
+//     const collectionStatus = db.collection("status");
+
+//     const stopName = req.params.name;
+//     const count = parseInt(req.params.count, 10);
+
+//     let result;
+
+//     if (!isNaN(count) && count > 0) {
+//       const docsToDelete = await collectionList.find({ stop: stopName }).limit(count).toArray();
+//       const ids = docsToDelete.map(doc => doc._id);
+//       result = await collectionList.deleteMany({ _id: { $in: ids } });
+//     } else {
+//       result = await collectionList.deleteMany({ stop: stopName });
+//     }
+
+//     await collectionStatus.updateOne(
+//       { _id: "collectionUpdate" },
+//       {
+//         $set: {
+//           lastUpdate: new Date(),
+//           status: result.deletedCount > 0 ? "Updated" : "No Passenger"
+//         }
+//       },
+//       { upsert: true }
+//     );
+
+//     res.json({
+//       message: `Deleted ${result.deletedCount} document(s) for stop ${stopName}`,
+//       deletedCount: result.deletedCount
+//     });
+//   } catch (err) {
+//     res.status(500).json({ error: err.message });
+//   }
+// });
 
 
 

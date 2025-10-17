@@ -6,20 +6,15 @@ function Admin() {
     const [isStatusLoading, setIsStatusLoading] = useState(false);
     const [customCount, setCustomCount] = useState("");
 
-    const handleClear = async (count = null) => {
+    const handleClear = async () => {
         setIsClearLoading(true);
         try {
-            const url = count
-                ? `${import.meta.env.VITE_REACT_APP_API_URL}/api/clear/a/${count}`
-                : `${import.meta.env.VITE_REACT_APP_API_URL}/api/clear/a`;
-
-            const response = await fetch(url, {
+            const response = await fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/api/clear/a`, {
                 method: 'DELETE',
             });
 
             if (response.ok) {
-                const result = await response.json();
-                alert(`Successfully cleared ${result.deletedCount} document(s) for Stop A`);
+                alert('Successfully cleared documents for Stop A');
             } else {
                 alert('Failed to clear documents');
             }
@@ -96,7 +91,7 @@ function Admin() {
                         >
                             {isClearLoading ? 'Loading...' : 'CLEAR'}
                         </Button>
-                        <div className="flex gap-2 mt-2">
+                        {/* <div className="flex gap-2 mt-2">
                             <input
                                 type="number"
                                 min="1"
@@ -113,7 +108,7 @@ function Admin() {
                             >
                                 {isClearLoading ? 'Loading...' : 'Clear Custom'}
                             </Button>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
 
