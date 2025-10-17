@@ -109,7 +109,7 @@ function Admin() {
                             <Button
                                 size="lg"
                                 onClick={() => handleClear(customCount)}
-                                disabled={isClearLoading || !customCount}
+                                disabled={isClearLoading}
                             >
                                 {isClearLoading ? 'Loading...' : 'Clear Custom'}
                             </Button>

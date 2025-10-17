@@ -125,11 +125,11 @@ app.delete("/api/clear/:name/:count?", async (req, res) => {
     const collectionStatus = db.collection("status");
 
     const stopName = req.params.name;
-    const count = parseInt(req.params.count);
+    const count = parseInt(req.params.count, 10);
 
     let result;
 
-    if (count && count > 0) {
+    if (!isNaN(count) && count > 0) {
       const docsToDelete = await collectionList.find({ stop: stopName }).limit(count).toArray();
       const ids = docsToDelete.map(doc => doc._id);
       result = await collectionList.deleteMany({ _id: { $in: ids } });
