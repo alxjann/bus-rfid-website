@@ -30,6 +30,7 @@ function Admin() {
     const handleStatus = async (status) => {
         setIsStatusLoading(true);
         try {
+            await fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/api/stop/a`);
             const response = await fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/api/stop/a`, {
                 method: 'PATCH',
                 headers: {
