@@ -10,15 +10,31 @@ app.use(express.json());
 const mongoUrl = process.env.MONGO_URL;
 const dbName = "its";
 
-let cachedClient = null;
-let cachedDb = null;
+// let cachedClient = null;
+// let cachedDb = null;
+
+// async function connectToDatabase() {
+//   if (cachedDb) return cachedDb;
+//   const client = await MongoClient.connect(mongoUrl);
+//   cachedClient = client;
+//   cachedDb = client.db(dbName);
+//   return cachedDb;
+// }
+
+const clientOptions = {
+  maxPoolSize: 10,
+  minPoolSize: 2,
+  connectTimeoutMS: 10000,
+  socketTimeoutMS: 45000,
+};
 
 async function connectToDatabase() {
-  if (cachedDb) return cachedDb;
-  const client = await MongoClient.connect(mongoUrl);
-  cachedClient = client;
-  cachedDb = client.db(dbName);
-  return cachedDb;
+  if (db) return db;
+  const client = new MongoClient(mongoUrl, clientOptions);
+  await client.connect();
+  db = client.db(dbName);
+  console.log("✅ Connected to MongoDB (pooled connection)");
+  return db;
 }
 
 app.get("/", (req, res) => {
@@ -114,6 +130,12 @@ app.delete("/api/clear/:name", async (req, res) => {
   }
 });
 
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server running`);
+});
+
+module.exports = app;
 // app.delete("/api/clear/:name/:count?", async (req, res) => {
 //   try {
 //     const db = await connectToDatabase();
@@ -156,7 +178,7 @@ app.delete("/api/clear/:name", async (req, res) => {
 
 
 
-module.exports = app;
+
 
 /*
 app.listen(3000, () => {
