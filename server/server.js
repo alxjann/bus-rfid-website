@@ -10,6 +10,8 @@ app.use(express.json());
 const mongoUrl = process.env.MONGO_URL;
 const dbName = "its";
 
+let db = null;
+
 // let cachedClient = null;
 // let cachedDb = null;
 
