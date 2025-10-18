@@ -60,6 +60,7 @@ function Admin() {
                     <div className="flex flex-col gap-2 items-center">
                         <h1 className="text-xl font-bold">Bus Status: </h1>
                         <Button 
+                            className="w-35"
                             size="lg" 
                             onClick={() => handleStatus('Ready to Board')}
                             disabled={isStatusLoading}
@@ -67,6 +68,7 @@ function Admin() {
                             {isStatusLoading ? 'Loading...' : 'Ready to Board'}
                         </Button>
                         <Button 
+                            className="w-35"
                             size="lg" 
                             onClick={() => handleStatus('Awaiting Bus')}
                             disabled={isStatusLoading}
@@ -74,6 +76,7 @@ function Admin() {
                             {isStatusLoading ? 'Loading...' : 'Awaiting Bus'}
                         </Button>
                         <Button 
+                            className="w-35"
                             size="lg" 
                             onClick={() => handleStatus('Route Mismatch')}
                             disabled={isStatusLoading}
@@ -85,6 +88,7 @@ function Admin() {
                     <div className="flex flex-col gap-2 items-center">
                         <h1 className="text-xl font-bold">Clear Passenger: </h1>
                         <Button 
+                            className="w-35"
                             size="lg" 
                             onClick={handleClear}
                             disabled={isClearLoading}
